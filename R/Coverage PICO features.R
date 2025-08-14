@@ -15,16 +15,16 @@ lapply(list.of.packages, require, character.only = TRUE); rm(list.of.packages)
 
 ## Load datasets ----
 # Participant characteristics
-load("./30_Analysis/Datasets in RData/participant.RData")
+load("./data/participant.RData")
 
 # Intervention (HBB) characteristics
-load("./30_Analysis/Datasets in RData/intervention.RData")
+load("./data/intervention.RData")
 
 # Comparator characteristics
-load("./30_Analysis/Datasets in RData/comparator.RData")
+load("./data/comparator.RData")
 
 # Outcomes (labour related and adverse events)
-load("./30_Analysis/Datasets in RData/outcome.RData")
+load("./data/outcome.RData")
 
 
 ## Prepare datasets ----
@@ -61,7 +61,7 @@ total_interv <- dim(intervention_new[, -c(1, 2)])[2]
 total_compar <- dim(comparator_new[, -c(1, 2)])[2] - 2 # Because 'placebo', 'no treatment' and 'other drug' are the comparator type (1 characteristic with three values)
 
 # Total *labour outcomes* characteristics
-total_labour_out <- dim(labour_duration[, -1])[2]
+total_labour_out <- dim(labour_duration[, -c(1, 2)])[2]
 
 # Total *labour related* characteristics
 total_labour_char <- dim(labour_char[, -c(1, 2)])[2]
@@ -108,7 +108,7 @@ complete_dataset <-
              type = c("Participant", "Intervention", "Comparator", rep("Outcome", 4)))
 
 # Create the bar plot
-tiff("./30_Analysis/Supplementary Figures/Supplementary Figure 2.tiff", 
+tiff("./Figures/Supplementary Figure 2.tiff", 
      height = 28, 
      width = 45, 
      units = "cm", 
@@ -124,7 +124,7 @@ ggplot(complete_dataset,
                 y = value,
                 label = paste0(value, "% (n = ", count, ")")), 
             vjust = -0.15,
-            size = 4.5, 
+            size = 5.5, 
             color = "black") +
   scale_fill_manual(breaks = c("Participant", "Intervention", "Comparator", rep("Outcome", 4)),
                     values = c("#CC79A7", "#E69F00", "#56B4E9", "#009E73")) +
@@ -133,12 +133,14 @@ ggplot(complete_dataset,
   labs(x = "",
        y = "Percentage PICO coverage (%)",
        fill = "PICO feature") + 
+  ggtitle("Frequency of extracted PICO features") +
   theme_classic() +
-  theme(axis.title = element_text(size = 15, face = "bold"),
-        axis.text = element_text(size = 15),
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.title = element_text(size = 16, face = "bold"),
+        axis.text = element_text(size = 16),
         legend.position = "bottom",
-        legend.title = element_text(size = 15, face = "bold"),
-        legend.text = element_text(size = 15))
+        legend.title = element_text(size = 16, face = "bold"),
+        legend.text = element_text(size = 16))
 dev.off()
 
 
@@ -204,8 +206,8 @@ review_dataset_long <- review_dataset_long %>%
                            "review_partic" = "Participant\n(n = 20)",                  # total_partic
                            "review_interv" = "Intervention\n(n = 3)",                  # total_interv
                            "review_compar" = "Comparator\n(n = 2)",                    # total_compar
-                           "review_duration" = "Labour duration\n(n = 6)",             # total_labour_out
-                           "review_labour_char" = "Other labour related\n(n = 7)",     # total_labour_char
+                           "review_duration" = "Labour duration\n(n = 5)",             # total_labour_out
+                           "review_labour_char" = "Labour features\n(n = 7)",          # total_labour_char
                            "review_maternal" = "Maternal AEs\n(n = 13)",               # total_maternal_ae
                            "review_neonatal" = "Neonatal AEs\n(n = 7)",                # total_neonatal_ae
                            "total_cov" = "Total coverage\n(across all features)"))
@@ -227,7 +229,7 @@ review_dataset_counts_long <- melt(review_dataset_counts)
 review_dataset_long$counts <- review_dataset_counts_long$value
 
 # Bubble plot
-tiff("./30_Analysis/Main Figures/Figure 2.tiff", 
+tiff("./Figures/Figure 2.tiff", 
      height = 28, 
      width = 45, 
      units = "cm", 
@@ -243,7 +245,7 @@ ggplot(review_dataset_long,
                 y = factor(review, levels = unique(review)),
                 label = ifelse(counts < 0, paste0(value, "%"), paste0(value, "%\n(", counts, ")"))),
             col = "black",
-            size = 4,
+            size = 5,
             vjust = 0.5,
             hjust = 0.5,
             fontface = "bold",
@@ -251,6 +253,7 @@ ggplot(review_dataset_long,
   labs(x = "",
        y = "",
        size = "Characteristic was reported") + 
+  ggtitle("PICO-specific and total percentage coverage of each review") +
   scale_size(range = c(0, 25)) +
   scale_colour_manual(breaks = c("Participant", "Intervention", "Comparator", "Outcome", "Total coverage"),
                       values = c("#CC79A7", "#E69F00", "#56B4E9", "#009E73", "red")) +
@@ -261,6 +264,7 @@ ggplot(review_dataset_long,
          size = "none") +
   theme_classic() +
   theme(strip.placement = "outside",
-        axis.text.x = element_text(size = 13, hjust = 0.5, vjust = 0),
-        axis.text.y = element_text(size = 13))
+        plot.title = element_text(size = 16, face = "bold"),
+        axis.text.x = element_text(size = 16, hjust = 0.5, vjust = 0),
+        axis.text.y = element_text(size = 16))
 dev.off()

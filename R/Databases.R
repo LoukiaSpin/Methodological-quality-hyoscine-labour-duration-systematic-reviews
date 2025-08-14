@@ -15,7 +15,7 @@ lapply(list.of.packages, require, character.only = TRUE); rm(list.of.packages)
 
 ## Load datasets ----
 # Databases
-load("./30_Analysis/Datasets in RData/databases.RData")
+load("./data/databases.RData")
 
 
 ## Main Figure: Bar plots ----
@@ -60,7 +60,7 @@ databases_long_new[order(databases_long_new$n, decreasing = TRUE), ]
 
 
 ## Plot databases per review ----
-tiff("./30_Analysis/Supplementary Figures/Supplementary Figure 5.tiff", 
+tiff("./Figures/Supplementary Figure 5.tiff", 
      height = 28, 
      width = 45, 
      units = "cm", 
@@ -94,13 +94,13 @@ ggplot(na.omit(databases_long),
   expand_limits(y = c(0, 13)) +
   theme_classic() +
   ggtitle("Databases searched") +
-  theme(title = element_text(size = 14, face = "bold"),
-        axis.text.y = element_text(size = 14),
+  theme(plot.title = element_text(size = 15, face = "bold"),
+        axis.text.y = element_text(size = 15),
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
         legend.position = "bottom",
         legend.margin = margin(t = -10),
-        legend.title = element_text(size = 14, face = "bold"),
-        legend.text = element_text(size = 14),
+        legend.title = element_text(size = 15, face = "bold"),
+        legend.text = element_text(size = 15),
         strip.text = element_text(size = 13.0, face = "bold"))
 dev.off()

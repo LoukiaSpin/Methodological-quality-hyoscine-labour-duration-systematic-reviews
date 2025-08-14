@@ -15,7 +15,7 @@ lapply(list.of.packages, require, character.only = TRUE); rm(list.of.packages)
 
 ## Load datasets ----
 # Included trials
-load("./30_Analysis/Datasets in RData/included_trials.RData")
+load("./data/included_trials.RData")
 
 
 
@@ -31,7 +31,7 @@ length(table(included_trials$`First author trial`)) # 56 unique trials
 
 # Number of trials per review
 num_trials_sr <- unlist(lapply(split(included_trials, included_trials$`First author SR`), function(x) dim(x)[1]))
-range(num_trials_sr) # 6 to 44
+range(num_trials_sr) # 5 to 44
 median(num_trials_sr) # 10
 
 # Range of trial publication year
@@ -72,7 +72,7 @@ dataset_new$trial_year_new <- str_right(as.character(dataset_new$trial), 4)
 
 
 ## Create plot ----
-tiff("./30_Analysis/Supplementary Figures/Supplementary Figure 6.tiff", 
+tiff("./Figures/Supplementary Figure 6.tiff", 
      height = 28, 
      width = 49, 
      units = "cm", 
@@ -100,16 +100,19 @@ ggplot(dataset,
             vjust = 2.5,
             colour = "grey45",
             fontface = "bold",
-            size = 4,
+            size = 5,
             inherit.aes = FALSE) +
   scale_x_discrete(position = 'top') +
   labs(x = "",
        y = "",
        fill = "Trial was included") + 
+  ggtitle("Distribution of eligible trials across years and reviews") +
   theme_classic() +
-  theme(strip.placement = "outside",
-        axis.text.x = element_text(size = 11, angle = 90, hjust = 0, vjust = 0),
-        axis.text.y = element_text(size = 11),
+  theme(plot.title = element_text(size = 14, face = "bold"),
+        strip.placement = "outside",
+        axis.text.x = element_text(size = 14, angle = 90, hjust = 0, vjust = 0),
+        axis.text.y = element_text(size = 14),
+        strip.text = element_text(size = 10),
         strip.background = element_rect(fill = 'white'),
         strip.switch.pad.grid = unit(10, "pt"),
         legend.position = "bottom",
@@ -152,7 +155,7 @@ bar_plot <-
                 label = paste0(intra_coverage, "%\n(n = ", n, ")")), 
             position = position_stack(vjust = .6),
             hjust = 0.5,
-            size = 4.5,
+            size = 5,
             lineheight = 0.8,
             #fontface = "bold",
             colour = "black") +
@@ -161,14 +164,16 @@ bar_plot <-
   scale_y_continuous(breaks = seq(0, 100, 20),
                      limits = c(0, 100)) +
   labs(x = "",
-       y = "Percentage intra-coverage (%)",
+       y = "Percentage of trials (%)",
        fill = "Included trials") + 
+  ggtitle("Percentage of intra-review coverage") +
   theme_classic() +
-  theme(axis.title = element_text(size = 15, face = "bold"),
-        axis.text = element_text(size = 15),
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.title = element_text(size = 16, face = "bold"),
+        axis.text = element_text(size = 16),
         legend.position = "bottom",
-        legend.title = element_text(size = 15, face = "bold"),
-        legend.text = element_text(size = 15))
+        legend.title = element_text(size = 16, face = "bold"),
+        legend.text = element_text(size = 16))
 
 
 ## Publication year coverage across the systematic reviews ----
@@ -213,7 +218,7 @@ line_plot <-
                 y = prob,
                 label = paste0(prob, "%")), 
             vjust = -0.7,
-            size = 4.5, 
+            size = 5, 
             color = "black",
             check_overlap = TRUE) +
   scale_colour_manual(breaks = c("Year-specific", "Cumulatively"),
@@ -223,16 +228,18 @@ line_plot <-
   labs(x = "",
        y = "Percentage year coverage (%)",
        colour = "Coverage calculated") + 
+  ggtitle("Percentage of year-specific coverage") +
   theme_classic() +
-  theme(axis.title = element_text(size = 15, face = "bold"),
-        axis.text = element_text(size = 15),
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.title = element_text(size = 16, face = "bold"),
+        axis.text = element_text(size = 16),
         legend.position = "bottom",
-        legend.title = element_text(size = 15, face = "bold"),
-        legend.text = element_text(size = 15))
+        legend.title = element_text(size = 16, face = "bold"),
+        legend.text = element_text(size = 16))
 
 
 ## Bring together ----
-tiff("./30_Analysis/Main Figures/Figure 5.tiff", 
+tiff("./Figures/Figure 5.tiff", 
      height = 35, 
      width = 45, 
      units = "cm", 

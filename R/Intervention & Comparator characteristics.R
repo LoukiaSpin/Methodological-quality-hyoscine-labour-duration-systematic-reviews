@@ -15,10 +15,10 @@ lapply(list.of.packages, require, character.only = TRUE); rm(list.of.packages)
 
 ## Load datasets ----
 # Intervention (HBB) characteristics
-load("./30_Analysis/Datasets in RData/intervention.RData")
+load("./data/intervention.RData")
 
 # Comparator characteristics
-load("./30_Analysis/Datasets in RData/comparator.RData")
+load("./data/comparator.RData")
 
 
 ## Prepare datasets ----
@@ -129,9 +129,10 @@ intervention_plot <-
   geom_text(aes(x = variable, 
                 y = factor(review, levels = unique(review)),
                 label = values_new),
-            size = 4.5,           
+            size = 4.5,    
+            fontface = "bold",
             vjust = -0.01,
-            hjust = "left") +
+            hjust = "center") +
   geom_label(data = data.frame(n = sort(intervention_new[-1], decreasing = TRUE),
                                variable = unique(intervention_long$variable)),
              aes(x = variable, 
@@ -153,15 +154,15 @@ intervention_plot <-
   ggtitle("Intervention characteristics") +
   guides(fill = guide_legend(override.aes = list(size = 6, stroke = 1.8, col = "white"), order = 1),
          colour = guide_legend(override.aes = list(size = 6, stroke = 1.8))) + 
-  theme(title = element_text(size = 14, face = "bold"),
-        axis.text.y = element_text(size = 14),
+  theme(plot.title = element_text(size = 15, face = "bold"),
+        axis.text.y = element_text(size = 15),
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
         legend.position = "bottom",
         legend.margin = margin(t = -10),
-        legend.title = element_text(size = 14, face = "bold"),
-        legend.text = element_text(size = 14),
-        strip.text = element_text(size = 12.0, face = "bold"))
+        legend.title = element_text(size = 15, face = "bold"),
+        legend.text = element_text(size = 15),
+        strip.text = element_text(size = 13.0, face = "bold"))
 
 
 ## Plot the comparator characteristics per review ----
@@ -184,8 +185,9 @@ comparator_plot <-
                 y = factor(review, levels = unique(review)),
                 label = values_new),
             size = 4.5,
+            fontface = "bold",
             vjust = -0.01,
-            hjust = "left") +
+            hjust = "center") +
   geom_label(data = data.frame(n = sort(comparator_new[-1], decreasing = TRUE),
                                variable = unique(comparator_long$variable)),
              aes(x = variable, 
@@ -205,18 +207,18 @@ comparator_plot <-
        col = "Information found in") + 
   theme_classic() +
   ggtitle("Comparator characteristics") +
-  theme(title = element_text(size = 14, face = "bold"),
+  theme(plot.title = element_text(size = 15, face = "bold"),
         axis.text = element_blank(),
         axis.ticks = element_blank(),
         legend.position = "bottom",
         legend.margin = margin(t = -10),
-        legend.title = element_text(size = 14, face = "bold"),
-        legend.text = element_text(size = 14),
-        strip.text = element_text(size = 12.0, face = "bold"))
+        legend.title = element_text(size = 15, face = "bold"),
+        legend.text = element_text(size = 15),
+        strip.text = element_text(size = 13.0, face = "bold"))
 
 
 ## Bring both in one Figure ----
-tiff("./30_Analysis/Supplementary Figures/Supplementary Figure 3.tiff", 
+tiff("./Figures/Supplementary Figure 3.tiff", 
      height = 25, 
      width = 50, 
      units = "cm", 

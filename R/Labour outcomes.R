@@ -16,7 +16,7 @@ lapply(list.of.packages, require, character.only = TRUE); rm(list.of.packages)
 
 ## Load datasets ----
 # Outcomes
-load("./30_Analysis/Datasets in RData/outcome.RData")
+load("./data/outcome.RData")
 
 
 ## Prepare datasets ----
@@ -124,6 +124,7 @@ labour_duration <-
                 y = factor(review, levels = unique(review)),
                 label = values_new),
             size = 4.0,
+            fontface = "bold",
             vjust = -0.01,
             hjust = 0.5) +
   geom_label(data = data.frame(n = sort(labour_duration_new[-1], decreasing = TRUE),
@@ -147,15 +148,15 @@ labour_duration <-
   ggtitle("Labour duration outcomes") +
   guides(fill = guide_legend(override.aes = list(size = 6, stroke = 1.8, col = "white"), order = 1),
          colour = guide_legend(override.aes = list(size = 6, stroke = 1.8))) + 
-  theme(title = element_text(size = 14, face = "bold"),
-        axis.title = element_text(size = 14),
-        axis.text.y = element_text(size = 14),
+  theme(plot.title = element_text(size = 15, face = "bold"),
+        axis.title = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
         legend.position = "bottom",
         legend.margin = margin(t = -10),
-        legend.title = element_text(size = 14, face = "bold"),
-        legend.text = element_text(size = 14),
+        legend.title = element_text(size = 15, face = "bold"),
+        legend.text = element_text(size = 15),
         strip.text = element_text(size = 12.0, face = "bold"))
 
 
@@ -179,6 +180,7 @@ labour_char <-
                 y = factor(review, levels = unique(review)),
                 label = values),
             size = 4.0,
+            fontface = "bold",
             vjust = -0.01,
             hjust = 0.5) +
   geom_label(data = data.frame(n = sort(labour_char_new[-1], decreasing = TRUE),
@@ -200,19 +202,19 @@ labour_char <-
        col = "Information found in") + 
   theme_classic() +
   ggtitle("Other labour-related characteristics") +
-  theme(title = element_text(size = 14, face = "bold"),
-        axis.title = element_text(size = 14),
+  theme(plot.title = element_text(size = 15, face = "bold"),
+        axis.title = element_text(size = 15),
         axis.text = element_blank(),
         axis.ticks = element_blank(),
         legend.position = "bottom",
         legend.margin = margin(t = -10),
-        legend.title = element_text(size = 14, face = "bold"),
-        legend.text = element_text(size = 14),
+        legend.title = element_text(size = 15, face = "bold"),
+        legend.text = element_text(size = 15),
         strip.text = element_text(size = 12.0, face = "bold"))
 
 
 ## Bring both in one Figure ----
-tiff("./30_Analysis/Main Figures/Figure 4.tiff", 
+tiff("./Figures/Figure 4.tiff", 
      height = 25, 
      width = 50, 
      units = "cm", 

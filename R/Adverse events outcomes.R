@@ -16,7 +16,7 @@ lapply(list.of.packages, require, character.only = TRUE); rm(list.of.packages)
 
 ## Load datasets ----
 # Participant characteristics
-load("./30_Analysis/Datasets in RData/outcome.RData")
+load("./data/outcome.RData")
 
 
 ## Prepare datasets ----
@@ -52,7 +52,7 @@ maternal_ae_long_rec <- maternal_ae_long %>%
                             "Blood loss after delivery" = "Blood loss\nafter delivery",
                             "Blood transfusion" = "Blood\ntransfusion",
                             "Maternal tachycardia" = "Maternal\ntachycardia",
-                            "Maternal mouth dryness" = "Maternal mouth\ndryness",
+                            "Maternal mouth dryness" = "Mouth\ndryness",
                             "Maternal headache" = "Maternal\nheadache",
                             "Maternal nausea" = "Maternal\nnausea",
                             "Maternal vomiting" = "Maternal\nvomiting",
@@ -102,18 +102,23 @@ maternal_ae_plot <-
          aes(x = variable, 
              y = factor(review, levels = unique(review)),
              fill = indicator)) +
-  geom_point(size = 6,
+  geom_point(aes(col = factor(values, levels = c("secondary", "unspecified"))),
+             size = 6,
              shape = 21,
-             alpha = 0.6,
-             col = "white") +
+             stroke = 3,
+             alpha = 0.6) +
   scale_fill_manual(breaks = c("Yes", "No"),
                     values = c("#009E73", "#D55E00")) +
-  geom_text(aes(x = variable, 
-                y = factor(review, levels = unique(review)),
-                label = values),
-            size = 4,
-            vjust = -0.01,
-            hjust = 0.5) +
+  scale_colour_manual(breaks = c("secondary", "unspecified"),
+                      values = c("grey45", "white"),
+                      na.value = "white",
+                      labels = c("Secondary", "Unspecified")) +
+  #geom_text(aes(x = variable, 
+  #              y = factor(review, levels = unique(review)),
+  #              label = values),
+  #          size = 4,
+  #          vjust = -0.01,
+  #          hjust = 0.5) +
   geom_label(data = data.frame(n = sort(maternal_ae_new[-1], decreasing = TRUE),
                                variable = unique(maternal_ae_long_rec$variable)),
              aes(x = variable, 
@@ -129,19 +134,22 @@ maternal_ae_plot <-
              scales = "free") +
   labs(x = "",
        y = "",
-       fill = "Characteristic was reported") + 
+       fill = "Characteristic was reported",
+       col = "Type of outcome") + 
   theme_classic() +
   ggtitle("Maternal adverse events") +
-  theme(title = element_text(size = 14, face = "bold"),
-        axis.title = element_text(size = 14),
-        axis.text.y = element_text(size = 14),
+  guides(fill = guide_legend(override.aes = list(size = 6, stroke = 1.8, col = "white"), order = 1),
+         colour = guide_legend(override.aes = list(size = 6, stroke = 1.8))) + 
+  theme(plot.title = element_text(size = 15, face = "bold"),
+        axis.title = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
         legend.position = "bottom",
         legend.margin = margin(t = -10),
-        legend.title = element_text(size = 14, face = "bold"),
-        legend.text = element_text(size = 14),
-        strip.text = element_text(size = 11.0, face = "bold"))
+        legend.title = element_text(size = 15, face = "bold"),
+        legend.text = element_text(size = 15),
+        strip.text = element_text(size = 12.0, face = "bold"))
 
 
 ## Plot neonatal adverse events ----
@@ -150,18 +158,23 @@ neonatal_ae_plot <-
          aes(x = variable, 
              y = factor(review, levels = unique(review)),
              fill = indicator)) +
-  geom_point(size = 6,
+  geom_point(aes(col = factor(values, levels = c("secondary", "unspecified"))),
+             size = 6,
              shape = 21,
-             alpha = 0.6,
-             col = "white") +
+             stroke = 3,
+             alpha = 0.6) +
   scale_fill_manual(breaks = c("Yes", "No"),
                     values = c("#009E73", "#D55E00")) +
-  geom_text(aes(x = variable, 
-                y = factor(review, levels = unique(review)),
-                label = values),
-            size = 4,
-            vjust = -0.01,
-            hjust = 0.5) +
+  scale_colour_manual(breaks = c("secondary", "unspecified"),
+                      values = c("grey45", "white"),
+                      na.value = "white",
+                      labels = c("Secondary", "Unspecified")) +
+  #geom_text(aes(x = variable, 
+  #              y = factor(review, levels = unique(review)),
+  #              label = values),
+  #          size = 4,
+  #          vjust = -0.01,
+  #          hjust = 0.5) +
   geom_label(data = data.frame(n = sort(neonatal_ae_new[-1], decreasing = TRUE),
                                variable = unique(neonatal_ae_long_rec$variable)),
              aes(x = variable, 
@@ -180,20 +193,22 @@ neonatal_ae_plot <-
        fill = "Characteristic was reported") + 
   theme_classic() +
   ggtitle("Neonatal adverse events") +
-  theme(title = element_text(size = 14, face = "bold"),
-        axis.title = element_text(size = 14),
-        axis.text.y = element_text(size = 14),
+  guides(fill = guide_legend(override.aes = list(size = 6, stroke = 1.8, col = "white"), order = 1),
+         colour = guide_legend(override.aes = list(size = 6, stroke = 1.8))) + 
+  theme(plot.title = element_text(size = 15, face = "bold"),
+        axis.title = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
         legend.position = "bottom",
         legend.margin = margin(t = -10),
-        legend.title = element_text(size = 14, face = "bold"),
-        legend.text = element_text(size = 14),
-        strip.text = element_text(size = 11.0, face = "bold"))
+        legend.title = element_text(size = 15, face = "bold"),
+        legend.text = element_text(size = 15),
+        strip.text = element_text(size = 12.0, face = "bold"))
 
 
 ## Bring together ----
-tiff("./30_Analysis/Supplementary Figures/Supplementary Figure 4.tiff", 
+tiff("./Figures/Supplementary Figure 4.tiff", 
      height = 28, 
      width = 45, 
      units = "cm", 

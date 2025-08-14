@@ -15,7 +15,7 @@ lapply(list.of.packages, require, character.only = TRUE); rm(list.of.packages)
 
 ## Load datasets ----
 # Participant characteristics
-load("./30_Analysis/Datasets in RData/participant.RData")
+load("./data/participant.RData")
 
 
 ## Prepare datasets ----
@@ -53,10 +53,10 @@ inclusion_long$values_new <- gsub("*", "", inclusion_long$values, fixed = TRUE)
 # Shorten the name of some variables
 inclusion_long_rec <- inclusion_long %>%
   mutate(variable  = recode(variable , 
-                            "Pregnancy type" = "Pregnancy\ntype",
-                            "Gestation delivery" = "Gestation\ndelivery",
-                            "Fetal positioning" = "Fetal\npositioning",
-                            "Membrane status" = "Membrane\nstatus",
+                            "Pregnancy type" = "Singleton\npregnancy",
+                            "Gestation delivery" = "Gestational\nage",
+                            "Fetal positioning" = "Vertex fetal\npositioning",
+                            "Membrane status" = "Membranes\nintact",
                             "Labour onset" = "Labour\nonset",
                             "Labour induction" = "Labour\ninduction",
                             "Labour phase" = "Labour\nphase",
@@ -66,8 +66,13 @@ inclusion_long_rec <- inclusion_long %>%
                             "Pregnancy risk" = "Pregnancy\nrisk"),
          values_new = recode(values_new,
                              "nullipara & multipara" = "nullipara &\nmultipara",
+                             "spontaneous or induced" = "spontaneous\nor induced",
+                             "regular" = "",
+                             "singleton" = "",
+                             "intact" = "",
                              "yes" = "",
-                             "active & expected" = "active &\nexpected",
+                             "vertex" = "",
+                             "active & expectant" = "active &\nexpectant",
                              "low- & high-risk" = "low- &\nhigh-risk"))
 
 # Include an indicator on whether a characteristics was reported or not
@@ -102,7 +107,7 @@ exclusion_long_rec <- exclusion_long %>%
                            "Vaginal delivery contraindications" = "Vaginal delivery\ncontraindications",
                            "Previous caesarian delivery" = "Previous caesarian\ndelivery",
                            "Pregnancy-induced illness" = "Pregnancy-induced\nillness",
-                           "Other placenta issues" = "Other placenta\nissues"))
+                           "Other placenta issues" = "Other placental\nconditions"))
 
 # Include an indicator on whether a characteristics was reported or not
 exclusion_long_rec$indicator <- ifelse(is.na(exclusion_long_rec$values_new), "No", "Yes")
@@ -127,7 +132,8 @@ inclusion <-
                 y = factor(review, levels = unique(review)),
                 label = values_new),
             size = 4,
-            vjust = -0.01,
+            fontface = "bold",
+            vjust = -0.08,
             hjust = 0.5,
             lineheight = 0.7) +
   geom_label(data = data.frame(n = sort(inclusion_new[-1], decreasing = TRUE),
@@ -151,15 +157,15 @@ inclusion <-
   ggtitle("Inclusion criteria") +
   guides(fill = guide_legend(override.aes = list(size = 6, stroke = 1.8, col = "white"), order = 1),
          colour = guide_legend(override.aes = list(size = 6, stroke = 1.8))) + 
-  theme(title = element_text(size = 14, face = "bold"),
-        axis.text.y = element_text(size = 14),
+  theme(plot.title = element_text(size = 15, face = "bold"),
+        axis.text.y = element_text(size = 15),
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
         legend.position = "bottom",
         legend.margin = margin(t = -10),
-        legend.title = element_text(size = 14, face = "bold"),
-        legend.text = element_text(size = 14),
-        strip.text = element_text(size = 11.0, face = "bold"))
+        legend.title = element_text(size = 15, face = "bold"),
+        legend.text = element_text(size = 15),
+        strip.text = element_text(size = 12.0, face = "bold"))
 
 # Plot exclusion criteria
 exclusion <-
@@ -191,19 +197,19 @@ exclusion <-
        fill = "Characteristic was reported") + 
   theme_classic() +
   ggtitle("Exclusion criteria") +
-  theme(title = element_text(size = 14, face = "bold"),
-        axis.text.y = element_text(size = 14),
+  theme(plot.title = element_text(size = 15, face = "bold"),
+        axis.text.y = element_text(size = 15),
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
         legend.position = "bottom",
         legend.margin = margin(t = -10),
-        legend.title = element_text(size = 14, face = "bold"),
-        legend.text = element_text(size = 14),
-        strip.text = element_text(size = 11.0, face = "bold"))
+        legend.title = element_text(size = 15, face = "bold"),
+        legend.text = element_text(size = 15),
+        strip.text = element_text(size = 12.0, face = "bold"))
 
 
 ## Bring together ----
-tiff("./30_Analysis/Main Figures/Figure 3.tiff", 
+tiff("./Figures/Figure 3.tiff", 
      height = 28, 
      width = 45, 
      units = "cm", 

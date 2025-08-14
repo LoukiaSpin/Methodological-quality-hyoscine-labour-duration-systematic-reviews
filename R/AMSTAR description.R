@@ -15,10 +15,10 @@ lapply(list.of.packages, require, character.only = TRUE); rm(list.of.packages)
 
 ## Load datasets ----
 # Databases search
-load("./30_Analysis/Datasets in RData/databases.RData")
+load("./data/databases.RData")
 
 # AMSTAR results
-load("./30_Analysis/Datasets in RData/AMSTAR_results.RData")
+load("./data/AMSTAR_results.RData")
 
 
 ## Main Figure: Bar plots ----
@@ -60,21 +60,21 @@ dataset_new <- transform(dataset,
 colnames(dataset_new)[2:17] <- paste("Domain", 1:16)
 
 # Create bar plot
-tiff("./30_Analysis/Main Figures/Figure 1.tiff", 
+tiff("./Figures/Figure 1.tiff", 
      height = 25, 
      width = 50, 
      units = "cm", 
      compression = "lzw", 
      res = 300)
 ggplot(dataset_new,
-       aes(x = factor(First.author, levels = unique(First.author[order(str_right(First.author, 4), First.author, decreasing = TRUE)])),  #reorder(`First author`, desc(year)), 
-           y = No..Citations,
+       aes(x = factor(`First author`, levels = unique(`First author`[order(str_right(`First author`, 4), `First author`, decreasing = TRUE)])),  #reorder(`First author`, desc(year)), 
+           y = `No. Citations`,
            fill = overall)) +
   geom_bar(stat = "identity",
            show.legend = TRUE) +
-  geom_text(aes(x = First.author, 
-                y = No..Citations,
-                label = No..Citations), 
+  geom_text(aes(x = `First author`, 
+                y = `No. Citations`,
+                label = `No. Citations`), 
             vjust = -0.15,
             size = 4.5, 
             color = "black",
@@ -87,12 +87,14 @@ ggplot(dataset_new,
                     drop = FALSE) +
   labs(x = "",
        y = "Number of citations") + 
+  ggtitle("Number of citations and AMSTAR overall confidence") +
   theme_classic() +
-  theme(axis.title = element_text(size = 15, face = "bold"),
-        axis.text = element_text(size = 15),
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.title = element_text(size = 16, face = "bold"),
+        axis.text = element_text(size = 16),
         legend.position = "bottom",
-        legend.title = element_text(size = 15, face = "bold"),
-        legend.text = element_text(size = 15))
+        legend.title = element_text(size = 16, face = "bold"),
+        legend.text = element_text(size = 16))
 dev.off()
 
 
@@ -127,7 +129,7 @@ dataset_long <- data.frame(review = rep(dataset_new[, 1], length(colnames(datase
 dataset_long$critical <- ifelse(is.element(dataset_long$variable, critical_domains), "yes", "no")
 
 # Plot AMSTAR results per review and item
-tiff("./30_Analysis/Supplementary Figures/Supplementary Figure 1.tiff", 
+tiff("./Figures/Supplementary Figure 1.tiff", 
      height = 25, 
      width = 50, 
      units = "cm", 
@@ -159,14 +161,14 @@ ggplot(dataset_long[1:128, ],
        colour = "") + 
   theme_classic() +
   ggtitle("AMSTAR assessment") +
-  theme(title = element_text(size = 14, face = "bold"),
-        axis.text.y = element_text(size = 15),
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.text.y = element_text(size = 16),
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
         legend.position = "bottom",
         legend.margin = margin(t = -10),
-        legend.title = element_text(size = 15, face = "bold"),
-        legend.text = element_text(size = 15),
-        strip.text = element_text(size = 13.0, face = "bold"))
+        legend.title = element_text(size = 16, face = "bold"),
+        legend.text = element_text(size = 16),
+        strip.text = element_text(size = 14.0, face = "bold"))
 dev.off()
 
