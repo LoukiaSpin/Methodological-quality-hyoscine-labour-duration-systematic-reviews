@@ -4,7 +4,7 @@
 #*                           Coverage of PICO features                                                                                                                                                                                        
 #*       
 #* Author: Loukia M. Spineli
-#* Date: April 2025      
+#* Date: August 2025      
 #*******************************************************************************      
 
 
@@ -102,7 +102,7 @@ neonatal_ae_cov <- round((total_neonatal_ae / total_char) * 100, 1)
 ## Prepare dataset for bar plot of PICO coverage ----
 # Create data-frame
 complete_dataset <- 
-  data.frame(pico = c("Participant", "Intervention", "Comparator", "Labour duration", "Other labour related", "Maternal AEs", "Neonatal AEs"),
+  data.frame(pico = c("Participant", "Intervention", "Comparator", "Labour duration", "Labour-related features", "Maternal AEs", "Neonatal AEs"),
              value = c(participant_cov, intervention_cov, comparator_cov, labour_out_cov, labour_char_cov, maternal_ae_cov, neonatal_ae_cov),
              count = c(total_partic, total_interv, total_compar, total_labour_out, total_labour_char, total_maternal_ae, total_neonatal_ae),
              type = c("Participant", "Intervention", "Comparator", rep("Outcome", 4)))
